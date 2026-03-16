@@ -4,7 +4,10 @@
   "scripts": {
     "dev": "concurrently \"cd client && vite\" \"cd server && nodemon server\"",
     "start": "cd server && node server",
-    "build": "cd client && vite build"
+    "build": "cd client && vite build",
+    "db_reset": "cd server && node config/reset.js",
+    "seed:locations": "cd server && node config/seedLocations.js",
+    "seed:events": "cd server && node config/seedEvents.js"
   },
   "dependencies": {
     "@picocss/pico": "^1.5.7",

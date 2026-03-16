@@ -1,16 +1,48 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import Event from '../components/Event'
+import LocationsAPI from '../services/LocationsAPI'
 import '../css/LocationEvents.css'
 
-const LocationEvents = ({index}) => {
-    const [location, setLocation] = useState([])
+const LocationEvents = () => {
+    const { locationId } = useParams()
+    const [location, setLocation] = useState(null)
     const [events, setEvents] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const [locationData, eventsData] = await Promise.all([
+                    LocationsAPI.getLocationById(locationId),
+                    LocationsAPI.getEventsByLocationId(locationId)
+                ])
+
+                setLocation(locationData)
+                setEvents(eventsData)
+            } catch (error) {
+                console.error(error)
+                setLocation(null)
+                setEvents([])
+            } finally {
+                setLoading(false)
+            }
+        })()
+    }, [locationId])
+
+    if (loading) {
+        return <h2>Loading location events...</h2>
+    }
+
+    if (!location) {
+        return <h2>Location not found.</h2>
+    }
 
     return (
         <div className='location-events'>
             <header>
                 <div className='location-image'>
-                    <img src={location.image} />
+                    <img src={location.image} alt={location.name} />
                 </div>
 
                 <div className='location-info'>
@@ -21,7 +53,7 @@ const LocationEvents = ({index}) => {
 
             <main>
                 {
-                    events && events.length > 0 ? events.map((event, index) =>
+                    events.length > 0 ? events.map((event) =>
                         <Event
                             key={event.id}
                             id={event.id}

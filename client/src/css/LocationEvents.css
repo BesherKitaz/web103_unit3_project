@@ -5,6 +5,25 @@
     flex-wrap: no-wrap;
 }
 
+.events-filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 30px;
+}
+
+.events-filter label {
+    font-weight: 700;
+}
+
+.events-filter select {
+    min-width: 220px;
+    padding: 8px 10px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+}
+
 .location-events header {
     background-color: var(--main-color);
     display: grid;
